@@ -5,7 +5,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>{{ $title ?? 'Title' }}</title>
-
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="base-url" content="{{ asset('') }}">
     <link rel="stylesheet" href="{{ asset('theme/vendors/iconfonts/font-awesome/css/all.min.css') }}">
     <link rel="stylesheet" href="{{ asset('theme/vendors/css/vendor.bundle.base.css') }}">
     <link rel="stylesheet" href="{{ asset('theme/vendors/css/vendor.bundle.addons.css') }}">
@@ -14,7 +15,10 @@
 
     <link rel="shortcut icon" href="http://www.urbanui.com/" />
 
-    {{ $headLinks ?? '' }}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    
+    {{ $headerStyles ?? ''}}
+    {{ $headerScripts ?? ''}}
 
     @livewireStyles
     @stack('styles')
@@ -88,7 +92,7 @@
 
     <script src="{{ asset('js/swal.js?v=' . time()) }}"></script>
 
-    {{ $footLinks ?? '' }}
+    {{ $footerScripts ?? ''}}
 
     @livewireScripts
     @stack('scripts');
