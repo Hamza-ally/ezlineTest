@@ -24,7 +24,8 @@ var UsersView = function () {
                     { 
                         data: null,
                         render: function (data, type, row) {
-                            return '<button id="delete-user" data-id="' + row.id + '" class="btn btn-rounded btn-icon btn-outline-danger"><i style="margin-left: -2.5px;" class="fa fa-trash"></i></button>';
+                            return '<button id="edit-user" data-id="' + row.id + '" class="btn btn-rounded btn-icon btn-outline-info"><i style="margin-left: -2.5px;" class="fa fa-edit"></i></button>' +
+                                   '<button id="delete-user" data-id="' + row.id + '" class="btn btn-rounded btn-icon btn-outline-danger ml-2"><i style="margin-left: -2.5px;" class="fa fa-trash"></i></button>';
                         }
                     },
                 ],
@@ -87,7 +88,12 @@ var UsersView = function () {
                 sweetAlert.Unitoast('Error', error, 'error');
                 // console.error('Error fetching data:', error);
             });
-        })
+        });
+
+        $(document).on('click', 'button#edit-user', function(event){
+            const editRoute = `${baseURL}/admin/users/edit/${$(this).data('id')}`;
+            window.location.assign(editRoute);
+        });
     };
 
     // var init = function () {

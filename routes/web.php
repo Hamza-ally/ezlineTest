@@ -36,6 +36,12 @@ Route::get('/home', function (Request $request) {
     else return redirect()->route('dashboard');
 })->name('home');
 
+Route::get('/dashboard', function () {
+    if(Auth::user()->role == "Administrator"){
+        return redirect()->route('admin.dashboard');
+    }
+})->name('dashboard');
+
 Route::prefix('admin')->group(function () {
     Route::name('admin.')->group(function () {
 
@@ -46,6 +52,7 @@ Route::prefix('admin')->group(function () {
         Route::controller(UserController::class)->group(function () {
             Route::get('/users/view', 'index')->name('users.view.auv');
             Route::get('/users/create', 'create')->name('users.create.auc');
+            Route::get('/users/edit/{id}', 'edit')->name('users.edit');
         });
     });
 });

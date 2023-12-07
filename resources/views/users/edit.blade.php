@@ -30,32 +30,32 @@
                     <h4 class="card-title">Users</h4>
 
                     <p class="card-description">
-                        You can create default app users here.
+                        You can edit default app users here.
                     </p>
 
-                    <form id="user-create-form" method="POST" action="{{route('api.admin.users.create')}}">
+                    <form id="user-edit-form" method="POST" action="{{route('api.admin.users.edit', ['id' => $user['id']])}}">
                         
                         <div class="form-group">
                             <label for="name">Name</label>
-                            <input type="text" class="form-control" name="name" id="name" placeholder="Name">
+                            <input type="text" class="form-control" name="name" id="name" value="{{$user['name']}}">
                         </div>
                     
                         <div class="form-group">
                             <label for="email">Email</label>
-                            <input type="text" class="form-control" name="email" id="email" placeholder="Email">
-                        </div>
-                    
-                        <div class="form-group">
-                            <label for="role">Role</label>
-                            <select name="role" id="role" class="form-control">
-                                <option value="Administrator">Administrator</option>
-                                <option value="User">User</option>
-                            </select>
+                            <input type="text" class="form-control" name="email" id="email" value="{{$user['email']}}">
                         </div>
 
                         <div class="form-group">
-                            <label for="password">Password</label>
-                            <input type="text" class="form-control" name="password" id="password" placeholder="Password">
+                            <label for="role">Role</label>
+                            <select name="role" id="role" class="form-control">
+                                <option value="Administrator" @if($user['role'] == "Administrator") selected @endif>Administrator</option>
+                                <option value="User" @if($user['role'] == "User") selected @endif>User</option>
+                            </select>
+                        </div>
+                    
+                        <div class="form-group">
+                            <label for="password">New Password</label>
+                            <input type="text" class="form-control" name="password" id="password" placeholder="New Password">
                         </div>
                     
                         <br>
@@ -75,9 +75,10 @@
     <x-slot name="footerScripts">
         <script>
             const _user = @json(Auth::user());
+            const user_id = @json($user['id']);
         </script>
         {{-- <script src="{{asset('js/swal.js')}}"></script> --}}
-        <script src="{{asset('js/admin/users/create.js')}}"></script>
+        <script src="{{asset('js/admin/users/edit.js')}}"></script>
     </x-slot>
 
 </x-app-layout>

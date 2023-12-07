@@ -30,6 +30,7 @@ class UserController extends Controller
         return Validator::make($data, [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'role' => ['required', 'in:Administrator,User'],
             'password' => ['required', 'string', 'min:8'],
         ]);
     }
@@ -43,7 +44,7 @@ class UserController extends Controller
         $user = new User();
         $user->name = $request->name;
         $user->email = $request->email;
-        $user->role = "User";
+        $user->role = $request->role;
         $user->password = Hash::make("@Password123");
         if($user->save()){
             return response()->json(['success' => 'User created!'], 200);
@@ -64,15 +65,34 @@ class UserController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $user = User::where('id', $id)->first()->toArray();
+        return view('users.edit', compact('user'));
     }
 
+    protected function validateEditUser(array $data)
+    {
+        return Validator::make($data, [
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'role' => ['required', 'in:Administrator,User'],
+            'password' => ['required', 'string', 'min:8'],
+        ]);
+    }
     /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, string $id)
     {
-        //
+        $this->validateEditUser($request->all())->validate();
+        $user = User::where('id', $id)->first();
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->password = Hash::make("@Password123");
+        $user->role = $request->role;
+        if($user->save()){
+            return response()->json(['success' => 'User updated!'], 200);
+        }
+        return response()->json(['error' => 'User not updated!'], 500);
     }
 
     /**

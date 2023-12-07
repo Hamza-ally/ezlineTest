@@ -31,6 +31,7 @@ Route::middleware('auth.api')->group(function () {
         Route::name('api.admin.')->group(function () {
             Route::get('/users/view', [UserController::class, 'show'])->name('users.view');
             Route::post('/users/create', [UserController::class, 'store'])->name('users.create');
+            Route::post('/users/edit/{id}', [UserController::class, 'update'])->name('users.edit');
             Route::post('/users/delete/{id}', [UserController::class, 'destroy'])->name('users.delete');
         });
     });
