@@ -14,8 +14,9 @@ trait AuthenticatesUsers
         $credentials = $request->only('email', 'password');
         
         // if ($this->attemptLogin($request)) {
-        if (Auth::attempt($credentials)) {
-            $user = auth()->user();
+        if (Auth::attempt($credentials, true)) {
+            $user = Auth::user();
+            // info('Authenticated User: ' . print_r($user, true));
             $user->generateToken();
 
             return response()->json([

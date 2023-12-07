@@ -18,8 +18,8 @@
         <div class="collapse" id="permission">
             <ul class="nav flex-column sub-menu">
                 <li class="nav-item"> 
-                    <a class="nav-link" id="permission" href="{{route('permission.create.pc')}}">Create</a>
-                    <a class="nav-link" id="permission" href="{{route('permission.view.pv')}}">View</a>
+                    <a class="nav-link" id="permission" href="#">Create</a>
+                    <a class="nav-link" id="permission" href="#">View</a>
                 </li>
             </ul>
         </div>
@@ -34,8 +34,8 @@
         <div class="collapse" id="users">
             <ul class="nav flex-column sub-menu">
                 <li class="nav-item"> 
-                    <a class="nav-link" id="users" href="{{route('users.create.uc')}}">Create</a>
-                    <a class="nav-link" id="users" href="{{route('users.view.uv')}}">View</a>
+                    <a class="nav-link" id="users" href="{{route('admin.users.create.auc')}}">Create</a>
+                    <a class="nav-link" id="users" href="{{route('admin.users.view.auv')}}">View</a>
                 </li>
             </ul>
         </div>

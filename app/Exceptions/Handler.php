@@ -56,7 +56,7 @@ class Handler extends ExceptionHandler
         if ($exception instanceof Exception && $request->is('api/*') && $request->wantsJson()) {
             return response()->json([
                 'error' => $exception->getMessage()
-            ], ($exception->getCode() == 0) ? 404 : $exception->getCode());
+            ], 404);
         }
 
         return parent::render($request, $exception);

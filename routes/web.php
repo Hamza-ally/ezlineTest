@@ -1,5 +1,9 @@
 <?php
 
+use App\Http\Controllers\UserController;
+use App\Models\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -24,3 +28,24 @@ Route::get('/login', function () {
 Route::get('/register', function () {
     return view('register');
 })->name('register');
+
+Route::get('/home', function (Request $request) {
+    $user = User::where("api_token", $request->token)->first();
+    Auth::login($user);
+    if($user->role == "Administrator") return redirect()->route('admin.dashboard');
+    else return redirect()->route('dashboard');
+})->name('home');
+
+Route::prefix('admin')->group(function () {
+    Route::name('admin.')->group(function () {
+
+        Route::get('/dashboard', function () {
+            return view('home');
+        })->name('dashboard');
+
+        Route::controller(UserController::class)->group(function () {
+            Route::get('/users/view', 'index')->name('users.view.auv');
+            Route::get('/users/create', 'create')->name('users.create.auc');
+        });
+    });
+});

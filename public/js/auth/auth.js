@@ -3,6 +3,8 @@
 var Auth = function () {
     var _login, _register;
 
+    const baseURL = window.location.origin;
+
     var handleLogin = function () {
         $(_login).on('submit', function (event) {
             event.preventDefault();
@@ -28,6 +30,9 @@ var Auth = function () {
                     return response.json();
                 })
                 .then(data => {
+                    var token = data.data.api_token;
+                    const redirectURL = `${baseURL}/home?token=${token}`;
+                    window.location.assign(redirectURL);
                     console.log(data);
                 })
                 .catch(error => {
@@ -65,6 +70,9 @@ var Auth = function () {
                     return response.json();
                 })
                 .then(data => {
+                    var token = data.data.api_token;
+                    const redirectURL = `${baseURL}/home?token=${token}`;
+                    window.location.assign(redirectURL);
                     console.log(data);
                 })
                 .catch(error => {
