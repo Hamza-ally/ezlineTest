@@ -11,7 +11,6 @@ var CreateUsers = function () {
             event.preventDefault();
             var token = user.api_token;
             const apiEndpoint = `${baseURL}/api/admin/users/create`;
-
             var formData = new FormData();
             formData.append('name', $('form#user-create-form input#name').val());
             formData.append('email', $('form#user-create-form input#email').val());

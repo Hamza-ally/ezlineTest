@@ -6,6 +6,9 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
+use Illuminate\Validation\Rule;
 
 class UserController extends Controller
 {
@@ -22,7 +25,8 @@ class UserController extends Controller
      */
     public function create()
     {
-        return view('users.create');
+        $roles = Role::all()->toArray();
+        return view('users.create', compact('roles'));
     }
 
     protected function validateNewUser(array $data)
@@ -30,7 +34,7 @@ class UserController extends Controller
         return Validator::make($data, [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'role' => ['required', 'in:Administrator,User'],
+            'role' => ['required', 'in:1,2,3'],
             'password' => ['required', 'string', 'min:8'],
         ]);
     }
@@ -41,13 +45,20 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $this->validateNewUser($request->all())->validate();
+        $role = Role::where('id', (int)$request->role)->first();
         $user = new User();
         $user->name = $request->name;
         $user->email = $request->email;
-        $user->role = $request->role;
+        $user->role = $role->name;
         $user->password = Hash::make("@Password123");
         if($user->save()){
-            return response()->json(['success' => 'User created!'], 200);
+            $userHasRole = $user->assignRole($role);
+            if($userHasRole){
+                return response()->json(['success' => 'User created!'], 200);
+            }else{
+                $user->delete();
+                return response()->json(['error' => 'User not created!'], 500);
+            }
         }
         return response()->json(['error' => 'User not created!'], 500);
     }
@@ -65,17 +76,24 @@ class UserController extends Controller
      */
     public function edit(string $id)
     {
-        $user = User::where('id', $id)->first()->toArray();
-        return view('users.edit', compact('user'));
+        $user = User::where('id', $id)->first();
+        $roles = Role::all()->toArray();
+        // $user_role = $user->getRoleNames();
+
+        $userroles = $user->roles;
+        $user_role = $userroles->pluck('id')->toArray();
+        $user = $user->toArray();
+        return view('users.edit', compact('user', 'roles', 'user_role'));
     }
 
     protected function validateEditUser(array $data)
     {
+        $userId = $data['id'];
         return Validator::make($data, [
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'role' => ['required', 'in:Administrator,User'],
-            'password' => ['required', 'string', 'min:8'],
+            'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users')->ignore($userId)],
+            'role' => ['required', 'in:1,2,3'],
+            'password' => ['nullable', 'string', 'min:8'],
         ]);
     }
     /**
@@ -83,13 +101,16 @@ class UserController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $this->validateEditUser($request->all())->validate();
+        // $this->validateEditUser($request->all())->validate();
+        $this->validateEditUser(array_merge($request->all(), ['id' => $id]))->validate();
+        $role = Role::where('id', (int)$request->role)->first();
         $user = User::where('id', $id)->first();
         $user->name = $request->name;
         $user->email = $request->email;
         $user->password = Hash::make("@Password123");
-        $user->role = $request->role;
+        $user->role = $role->name;
         if($user->save()){
+            $user->assignRole($role);
             return response()->json(['success' => 'User updated!'], 200);
         }
         return response()->json(['error' => 'User not updated!'], 500);

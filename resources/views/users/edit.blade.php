@@ -48,8 +48,9 @@
                         <div class="form-group">
                             <label for="role">Role</label>
                             <select name="role" id="role" class="form-control">
-                                <option value="Administrator" @if($user['role'] == "Administrator") selected @endif>Administrator</option>
-                                <option value="User" @if($user['role'] == "User") selected @endif>User</option>
+                                @foreach ($roles as $role)
+                                    <option value="{{$role['id']}}" @if($role['id'] == $user_role[0]) selected @endif>{{$role['name']}}</option>
+                                @endforeach
                             </select>
                         </div>
                     

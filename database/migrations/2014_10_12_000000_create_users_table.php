@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
-            $table->enum('role', ["Administrator", "User"]);
+            $table->enum('role', ["Admin", "Elevated User", "User"]);
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->string('api_token', 60)->unique()->nullable();

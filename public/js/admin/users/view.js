@@ -21,6 +21,7 @@ var UsersView = function () {
                 columns: [
                     { data: 'name' },
                     { data: 'email' },
+                    { data: 'role' },
                     { 
                         data: null,
                         render: function (data, type, row) {
