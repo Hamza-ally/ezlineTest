@@ -1,22 +1,19 @@
 "use strict";
 
-var EditUsers = function () {
+var EditRoles = function () {
 
     const user = _user;
     const baseURL = window.location.origin;
 
     var init = function () {
 
-        $('form#user-edit-form').on('submit', function (event) {
+        $('form#role-edit-form').on('submit', function (event) {
             event.preventDefault();
             var token = user.api_token;
-            const apiEndpoint = `${baseURL}/api/admin/users/edit/${user_id}`;
+            const apiEndpoint = `${baseURL}/api/admin/roles/edit/${role_id}`;
 
             var formData = new FormData();
-            formData.append('name', $('form#user-edit-form input#name').val());
-            formData.append('email', $('form#user-edit-form input#email').val());
-            formData.append('role', $('form#user-edit-form select#role').val());
-            formData.append('password', $('form#user-edit-form input#password').val());
+            formData.append('name', $('form#role-edit-form input#name').val());
 
             fetch(apiEndpoint, {
                 method: 'POST',
@@ -62,7 +59,7 @@ var EditUsers = function () {
 }();
 
 jQuery(document).ready(function () {
-    EditUsers.init();
+    EditRoles.init();
 });
 
 

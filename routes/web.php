@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use App\Models\User;
@@ -56,7 +57,15 @@ Route::prefix('admin')->group(function () {
             Route::get('/users/edit/{id}', 'edit')->name('users.edit');
         });
         Route::controller(RoleController::class)->group(function () {
+            Route::get('/roles/view/arv', 'index')->name('roles.view.arv');
             Route::get('/roles/create/arc', 'create')->name('roles.create.arc');
+            Route::get('/roles/edit/{id}', 'edit')->name('roles.edit');
+            Route::get('/roles/create/permissions/{id}/arcp', 'createPermissions')->name('roles.create.permissions.arcp');
+        });
+        Route::controller(PermissionController::class)->group(function () {
+            Route::get('/permissions/view/apv', 'index')->name('permissions.view.apv');
+            Route::get('/permissions/create/apc', 'create')->name('permissions.create.apc');
+            Route::get('/permissions/edit/{id}', 'edit')->name('permissions.edit');
         });
     });
 });

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
@@ -35,7 +36,16 @@ Route::middleware('auth.api')->group(function () {
             Route::post('/users/edit/{id}', [UserController::class, 'update'])->name('users.edit');
             Route::post('/users/delete/{id}', [UserController::class, 'destroy'])->name('users.delete');
 
+            Route::get('/roles/view', [RoleController::class, 'show'])->name('roles.view');
             Route::post('/roles/create', [RoleController::class, 'store'])->name('roles.create');
+            Route::post('/roles/edit/{id}', [RoleController::class, 'update'])->name('roles.edit');
+            Route::post('/roles/delete/{id}', [RoleController::class, 'destroy'])->name('roles.delete');
+            Route::post('/roles/create/permissions/{id}', [RoleController::class, 'storePermissions'])->name('roles.create.permissions');
+
+            Route::get('/permissions/view', [PermissionController::class, 'show'])->name('permissions.view');
+            Route::post('/permissions/create', [PermissionController::class, 'store'])->name('permissions.create');
+            Route::post('/permissions/edit/{id}', [PermissionController::class, 'update'])->name('permissions.edit');
+            Route::post('/permissions/delete/{id}', [PermissionController::class, 'destroy'])->name('permissions.delete');
         });
     });
 
