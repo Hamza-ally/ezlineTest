@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -33,6 +34,8 @@ Route::middleware('auth.api')->group(function () {
             Route::post('/users/create', [UserController::class, 'store'])->name('users.create');
             Route::post('/users/edit/{id}', [UserController::class, 'update'])->name('users.edit');
             Route::post('/users/delete/{id}', [UserController::class, 'destroy'])->name('users.delete');
+
+            Route::post('/roles/create', [RoleController::class, 'store'])->name('roles.create');
         });
     });
 

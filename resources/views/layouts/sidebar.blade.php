@@ -10,16 +10,16 @@
     </li>
 
     <li class="nav-item">
-        <a class="nav-link" data-toggle="collapse" href="#permission" aria-expanded="false" aria-controls="permission">
+        <a class="nav-link" data-toggle="collapse" href="#role" aria-expanded="false" aria-controls="role">
             <i class="fab fa-trello menu-icon"></i>
-            <span class="menu-title">Permission</span>
+            <span class="menu-title">Role</span>
             <i class="menu-arrow"></i>
         </a>
-        <div class="collapse" id="permission">
+        <div class="collapse" id="role">
             <ul class="nav flex-column sub-menu">
                 <li class="nav-item"> 
-                    <a class="nav-link" id="permission" href="#">Create</a>
-                    <a class="nav-link" id="permission" href="#">View</a>
+                    <a class="nav-link" id="role" href="{{route('admin.roles.create.arc')}}">Create</a>
+                    <a class="nav-link" id="role" href="#">View</a>
                 </li>
             </ul>
         </div>

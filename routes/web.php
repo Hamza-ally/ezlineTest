@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -50,9 +51,12 @@ Route::prefix('admin')->group(function () {
         })->name('dashboard');
 
         Route::controller(UserController::class)->group(function () {
-            Route::get('/users/view', 'index')->name('users.view.auv');
-            Route::get('/users/create', 'create')->name('users.create.auc');
+            Route::get('/users/view/auv', 'index')->name('users.view.auv');
+            Route::get('/users/create/auc', 'create')->name('users.create.auc');
             Route::get('/users/edit/{id}', 'edit')->name('users.edit');
+        });
+        Route::controller(RoleController::class)->group(function () {
+            Route::get('/roles/create/arc', 'create')->name('roles.create.arc');
         });
     });
 });
