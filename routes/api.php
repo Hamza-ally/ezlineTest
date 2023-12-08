@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PermissionController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
@@ -46,6 +47,12 @@ Route::middleware('auth.api')->group(function () {
             Route::post('/permissions/create', [PermissionController::class, 'store'])->name('permissions.create');
             Route::post('/permissions/edit/{id}', [PermissionController::class, 'update'])->name('permissions.edit');
             Route::post('/permissions/delete/{id}', [PermissionController::class, 'destroy'])->name('permissions.delete');
+
+            Route::get('/products/view', [ProductController::class, 'show'])->name('products.view');
+            Route::post('/products/create', [ProductController::class, 'store'])->name('products.create');
+            Route::post('/products/edit/{id}', [ProductController::class, 'update'])->name('products.edit');
+            Route::post('/products/delete/{id}', [ProductController::class, 'destroy'])->name('products.delete');
+
         });
     });
 

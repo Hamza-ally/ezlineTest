@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\PermissionController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use App\Models\User;
@@ -39,7 +40,7 @@ Route::get('/home', function (Request $request) {
 })->name('home');
 
 Route::get('/dashboard', function () {
-    if(Auth::user()->role == "Administrator"){
+    if(Auth::user()->role == "Admin"){
         return redirect()->route('admin.dashboard');
     }
 })->name('dashboard');
@@ -66,6 +67,11 @@ Route::prefix('admin')->group(function () {
             Route::get('/permissions/view/apv', 'index')->name('permissions.view.apv');
             Route::get('/permissions/create/apc', 'create')->name('permissions.create.apc');
             Route::get('/permissions/edit/{id}', 'edit')->name('permissions.edit');
+        });
+        Route::controller(ProductController::class)->group(function () {
+            Route::get('/products/view/aprv', 'index')->name('products.view.aprv');
+            Route::get('/products/create/aprc', 'create')->name('products.create.aprc');
+            Route::get('/products/edit/{id}', 'edit')->name('products.edit');
         });
     });
 });

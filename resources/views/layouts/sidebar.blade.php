@@ -57,4 +57,20 @@
         </div>
     </li>
 
+    <li class="nav-item">
+        <a class="nav-link" data-toggle="collapse" href="#products" aria-expanded="false" aria-controls="products">
+            <i class="fa fa-users menu-icon"></i>
+            <span class="menu-title">Products</span>
+            <i class="menu-arrow"></i>
+        </a>
+        <div class="collapse" id="products">
+            <ul class="nav flex-column sub-menu">
+                <li class="nav-item">
+                    <a class="nav-link" id="products" href="{{route('admin.products.create.aprc')}}">Create</a>
+                    <a class="nav-link" id="products" href="{{route('admin.products.view.aprv')}}">View</a>
+                </li>
+            </ul>
+        </div>
+    </li>
+
 </ul>

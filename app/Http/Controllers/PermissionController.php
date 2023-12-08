@@ -26,7 +26,7 @@ class PermissionController extends Controller
         return view('permissions.create');
     }
 
-    protected function validateCreatePermissoin(array $data)
+    protected function validateCreatePermission(array $data)
     {
         return Validator::make($data, [
             'name' => ['required', 'string', 'unique:permissions', 'max:32'],
@@ -38,7 +38,7 @@ class PermissionController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validateCreatePermissoin($request->all())->validate();
+        $this->validateCreatePermission($request->all())->validate();
         $permission = Permission::create(['name' => $request->name]);
         if($permission){
             return response()->json(['success' => 'Permission created!'], 200);
