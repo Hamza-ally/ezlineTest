@@ -26,10 +26,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 // Route::middleware('auth:api')->group(function () {
     Route::post('/login', [AuthController::class, 'login'])->name('api.login');
     Route::post('/register', [AuthController::class, 'register'])->name('api.register');
+    Route::post('/logout', [AuthController::class, 'destroy'])->name('api.logout');
 // });
 
 Route::middleware('auth.api')->group(function () {
-
+    Route::post('/logout', [AuthController::class, 'destroy'])->name('api.logout');
     Route::prefix('admin')->group(function () {
         Route::name('api.admin.')->group(function () {
             Route::get('/users/view', [UserController::class, 'show'])->name('users.view');
@@ -52,6 +53,7 @@ Route::middleware('auth.api')->group(function () {
             Route::post('/products/create', [ProductController::class, 'store'])->name('products.create');
             Route::post('/products/edit/{id}', [ProductController::class, 'update'])->name('products.edit');
             Route::post('/products/delete/{id}', [ProductController::class, 'destroy'])->name('products.delete');
+
 
         });
     });

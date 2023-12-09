@@ -52,6 +52,10 @@ Route::prefix('admin')->group(function () {
             return view('home');
         })->name('dashboard');
 
+        Route::get('/external/api/view/eav', function () {
+            return view('externalApis.view');
+        })->name('external.api.view.eav')->middleware('ytsMx');
+
         Route::controller(UserController::class)->group(function () {
             Route::get('/users/view/auv', 'index')->name('users.view.auv');
             Route::get('/users/create/auc', 'create')->name('users.create.auc');

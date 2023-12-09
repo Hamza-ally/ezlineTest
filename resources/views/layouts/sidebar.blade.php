@@ -73,4 +73,11 @@
         </div>
     </li>
 
+    <li class="nav-item">
+        <a class="nav-link" href="{{route('admin.external.api.view.eav')}}">
+            <i class="fa fa-home menu-icon"></i>
+            <span class="menu-title">External Api</span>
+        </a>
+    </li>
+
 </ul>

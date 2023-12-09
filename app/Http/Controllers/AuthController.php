@@ -96,8 +96,18 @@ class AuthController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Request $request)
     {
-        //
+        $token = $request->header('Authorization');
+        if (!$token) {
+            return response()->json(['error' => 'Unauthenticated'], 401);
+        }
+        $token = str_replace('Bearer ', '', $token);
+        $user = User::where('api_token', $token)->first();
+        if($user){
+            $user->api_token = null;
+            $user->save();
+        }
+        return response()->json(['data' => 'User logged out.'], 200);
     }
 }
