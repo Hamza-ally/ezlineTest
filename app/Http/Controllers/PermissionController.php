@@ -15,6 +15,9 @@ class PermissionController extends Controller
      */
     public function index()
     {
+        if (!auth()->user()->can('view permissions')) {
+            abort(403, 'Unauthorized action. You do not have the required permission.');
+        }
         return view('permissions.view');
     }
 
@@ -23,6 +26,9 @@ class PermissionController extends Controller
      */
     public function create()
     {
+        if (!auth()->user()->can('create permissions')) {
+            abort(403, 'Unauthorized action. You do not have the required permission.');
+        }
         return view('permissions.create');
     }
 
@@ -38,6 +44,9 @@ class PermissionController extends Controller
      */
     public function store(Request $request)
     {
+        if (!auth()->user()->can('create permissions')) {
+            return response()->json(['data' => 'Unauthorized action. You do not have the required permission.'], 403);
+        }
         $this->validateCreatePermission($request->all())->validate();
         $permission = Permission::create(['name' => $request->name]);
         if($permission){
@@ -51,6 +60,9 @@ class PermissionController extends Controller
      */
     public function show()
     {
+        if (!auth()->user()->can('view permissions')) {
+            return response()->json(['data' => 'Unauthorized action. You do not have the required permission.'], 403);
+        }
         return response()->json(['data' => Permission::all()]);
     }
 
@@ -59,6 +71,9 @@ class PermissionController extends Controller
      */
     public function edit(string $id)
     {
+        if (!auth()->user()->can('edit permissions')) {
+            abort(403, 'Unauthorized action. You do not have the required permission.');
+        }
         $permission = Permission::where('id', $id)->first()->toArray();
         return view('permissions.edit', compact('permission'));
     }
@@ -74,6 +89,9 @@ class PermissionController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        if (!auth()->user()->can('edit permissions')) {
+            return response()->json(['data' => 'Unauthorized action. You do not have the required permission.'], 403);
+        }
         $this->validateEditPermission($request->all())->validate();
         $permission = Permission::find($id);
         if (!$permission) {
@@ -91,6 +109,9 @@ class PermissionController extends Controller
      */
     public function destroy(string $id)
     {
+        if (!auth()->user()->can('delete permissions')) {
+            return response()->json(['data' => 'Unauthorized action. You do not have the required permission.'], 403);
+        }
         $permission = Permission::where('id', $id)->first();
         if($permission->delete()){
             return response()->json(['success' => 'Permission deleted!'], 200);

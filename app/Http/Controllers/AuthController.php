@@ -98,16 +98,22 @@ class AuthController extends Controller
      */
     public function destroy(Request $request)
     {
-        $token = $request->header('Authorization');
-        if (!$token) {
-            return response()->json(['error' => 'Unauthenticated'], 401);
+        if($request->wantsJson()){
+            $token = $request->header('Authorization');
+            if (!$token) {
+                return response()->json(['error' => 'Unauthenticated'], 401);
+            }
+            $token = str_replace('Bearer ', '', $token);
+            $user = User::where('api_token', $token)->first();
         }
-        $token = str_replace('Bearer ', '', $token);
-        $user = User::where('api_token', $token)->first();
+        $user = Auth::user();
         if($user){
             $user->api_token = null;
             $user->save();
         }
-        return response()->json(['data' => 'User logged out.'], 200);
+        Auth::logout();
+        if($request->wantsJson()) return response()->json(['data' => 'User logged out.'], 200);
+        else return redirect()->route('login');
+        
     }
 }

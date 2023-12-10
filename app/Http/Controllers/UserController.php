@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Spatie\Permission\Models\Role;
@@ -17,6 +18,15 @@ class UserController extends Controller
      */
     public function index()
     {
+        // $user = Auth::user();
+        // $role = Role::where('id', 1)->first();
+        // $user->assignRole($role);
+        // dd($role->getPermissionNames());
+        // dd(auth()->user()->can('delete users'));
+        
+        if (!auth()->user()->can('view users')) {
+            abort(403, 'Unauthorized action. You do not have the required permission.');
+        }
         return view('users.view');
     }
 
@@ -25,6 +35,21 @@ class UserController extends Controller
      */
     public function create()
     {
+        // $user = Auth::user();
+        // $roles = $user->getRoleNames();
+        // $permissions = $user->getPermissionNames();
+        // dd($roles, $permissions);
+        // if (!$user->hasRole('Admin')) {
+        //     abort(403, 'Unauthorized action. You do not have the required role.');
+        // }
+        // if (!$user->can("create users")) {
+        //     abort(403, 'Unauthorized action. You do not have the required permission.');
+        // }
+
+        if (!auth()->user()->can('create users')) {
+            abort(403, 'Unauthorized action. You do not have the required permission.');
+        }
+
         $roles = Role::all()->toArray();
         return view('users.create', compact('roles'));
     }
@@ -44,21 +69,20 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
+        if (!auth()->user()->can('create users')) {
+            return response()->json(['data' => 'Unauthorized action. You do not have the required permission.'], 403);
+        }
+
         $this->validateNewUser($request->all())->validate();
-        $role = Role::where('id', (int)$request->role)->first();
+        $role = Role::where('id', $request->role)->first();
         $user = new User();
         $user->name = $request->name;
         $user->email = $request->email;
         $user->role = $role->name;
         $user->password = Hash::make("@Password123");
         if($user->save()){
-            $userHasRole = $user->assignRole($role);
-            if($userHasRole){
-                return response()->json(['success' => 'User created!'], 200);
-            }else{
-                $user->delete();
-                return response()->json(['error' => 'User not created!'], 500);
-            }
+            $user->assignRole($role);
+            return response()->json(['success' => 'User created!'], 200);
         }
         return response()->json(['error' => 'User not created!'], 500);
     }
@@ -68,6 +92,9 @@ class UserController extends Controller
      */
     public function show()
     {
+        if (!auth()->user()->can('view users')) {
+            abort(403, 'Unauthorized action. You do not have the required permission.');
+        }
         return response()->json(['data' => User::where('id', '!=', 1)->orderBy('created_at', 'desc')->get()]);
     }
 
@@ -76,6 +103,9 @@ class UserController extends Controller
      */
     public function edit(string $id)
     {
+        if (!auth()->user()->can('edit users')) {
+            abort(403, 'Unauthorized action. You do not have the required permission.');
+        }
         $user = User::where('id', $id)->first();
         $roles = Role::all()->toArray();
         // $user_role = $user->getRoleNames();
@@ -101,10 +131,17 @@ class UserController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        if (!auth()->user()->can('edit users')) {
+            return response()->json(['data' => 'Unauthorized action. You do not have the required permission.'], 403);
+        }
         // $this->validateEditUser($request->all())->validate();
         $this->validateEditUser(array_merge($request->all(), ['id' => $id]))->validate();
-        $role = Role::where('id', (int)$request->role)->first();
+        $role = Role::where('id', $request->role)->first();
         $user = User::where('id', $id)->first();
+        $userRole = $user->getRoleNames();
+        if ($user->hasRole($userRole[0])) {
+            $user->removeRole($userRole[0]);
+        }
         $user->name = $request->name;
         $user->email = $request->email;
         $user->password = Hash::make("@Password123");
@@ -121,6 +158,9 @@ class UserController extends Controller
      */
     public function destroy(string $id)
     {
+        if (!auth()->user()->can('delete users')) {
+            return response()->json(['data' => 'Unauthorized action. You do not have the required permission.'], 403);
+        }
         if($id == 1){
             return response()->json(['error' => 'Internal Server error!'], 500);
         }

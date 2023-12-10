@@ -176,8 +176,7 @@
                     Settings
                 </a>
                 <div class="dropdown-divider"></div>
-                {{-- {{ route('logout') }} --}}
-                <form method="POST" action="#" x-data>
+                <form method="POST" action="{{ route('logout') }}" x-data>
                     @csrf
                     <button type="submit" class="dropdown-item">
                         <i class="fas fa-power-off text-primary"></i>

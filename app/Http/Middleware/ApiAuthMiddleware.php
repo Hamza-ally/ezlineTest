@@ -28,7 +28,7 @@ class ApiAuthMiddleware
         }
 
         // Log in the user
-        // Auth::login($user);
+        Auth::login($user);
 
         return $next($request);
     }

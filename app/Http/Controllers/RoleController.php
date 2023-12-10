@@ -15,6 +15,9 @@ class RoleController extends Controller
      */
     public function index()
     {
+        if (!auth()->user()->can('view roles')) {
+            abort(403, 'Unauthorized action. You do not have the required permission.');
+        }
         return view('roles.view');
     }
 
@@ -23,6 +26,9 @@ class RoleController extends Controller
      */
     public function create()
     {
+        if (!auth()->user()->can('create roles')) {
+            abort(403, 'Unauthorized action. You do not have the required permission.');
+        }
         return view('roles.create');
     }
 
@@ -37,6 +43,9 @@ class RoleController extends Controller
      */
     public function store(Request $request)
     {
+        if (!auth()->user()->can('create roles')) {
+            return response()->json(['data' => 'Unauthorized action. You do not have the required permission.'], 403);
+        }
         $this->validateCreateRole($request->all())->validate();
         $role = Role::create(['name' => $request->name]);
         if($role){
@@ -46,6 +55,9 @@ class RoleController extends Controller
     }
 
     public function createPermissions(String $id){
+        if (!auth()->user()->can('create roles')) {
+            abort(403, 'Unauthorized action. You do not have the required permission.');
+        }
         $role = Role::where('id', $id)->first();
         $role_permissions = $role->permissions->toArray();
         $role_permissions_ids = [];
@@ -58,6 +70,9 @@ class RoleController extends Controller
     }
 
     public function storePermissions(Request $request, String $id){
+        if (!auth()->user()->can('create roles')) {
+            return response()->json(['data' => 'Unauthorized action. You do not have the required permission.'], 403);
+        }
         $role = Role::find($id);
 
         if (!$role) {
@@ -76,6 +91,7 @@ class RoleController extends Controller
         }
     
         // Sync the permissions to the role
+        // $role->givePermissionTo($permissions);
         $role->syncPermissions($permissions);
     
         return response()->json(['success' => 'Permissions assigned to role!'], 200);
@@ -86,6 +102,9 @@ class RoleController extends Controller
      */
     public function show()
     {
+        if (!auth()->user()->can('view roles')) {
+            return response()->json(['data' => 'Unauthorized action. You do not have the required permission.'], 403);
+        }
         return response()->json(['data' => Role::all()]);
     }
 
@@ -94,6 +113,9 @@ class RoleController extends Controller
      */
     public function edit(string $id)
     {
+        if (!auth()->user()->can('edit roles')) {
+            abort(403, 'Unauthorized action. You do not have the required permission.');
+        }
         $role = Role::where('id', $id)->first()->toArray();
         return view('roles.edit', compact('role'));
     }
@@ -109,6 +131,9 @@ class RoleController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        if (!auth()->user()->can('edit roles')) {
+            return response()->json(['data' => 'Unauthorized action. You do not have the required permission.'], 403);
+        }
         $this->validateEditRole($request->all())->validate();
         $role = Role::find($id);
         if (!$role) {
@@ -126,6 +151,9 @@ class RoleController extends Controller
      */
     public function destroy(string $id)
     {
+        if (!auth()->user()->can('delete roles')) {
+            return response()->json(['data' => 'Unauthorized action. You do not have the required permission.'], 403);
+        }
         if($id == 1){
             return response()->json(['error' => 'Internal Server error!'], 500);
         }
