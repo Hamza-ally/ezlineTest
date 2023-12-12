@@ -64,7 +64,7 @@ class AuthController extends Controller
     {
         $roles = ['Admin' => "1", "Elevated User" => "2", "User" => "3"];
         if(in_array($request->role, $roles)){
-            $role = Role::where('id', $roles[$request->role])->first();
+            $role = Role::where('id', (int)$roles[$request->role])->first();
             $user = new User();
             $user->name = $request['name'];
             $user->email = $request['email'];
