@@ -9,6 +9,8 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
 
 class AuthController extends Controller
 {
@@ -60,12 +62,15 @@ class AuthController extends Controller
      */
     public function store($request)
     {
+        $roles = ['Admin' => "1", "Elevated User" => "2", "User" => "3"];
+        $role = Role::where('id', $roles[$request->role])->first();
         $user = new User();
         $user->name = $request['name'];
         $user->email = $request['email'];
         $user->role = "User";
         $user->password = Hash::make($request['password']);
         $user->save();
+        $user->assignRole($role);
         return $user;
     }
 
