@@ -15,11 +15,13 @@ var CreatePermissions = function () {
             var formData = new FormData();
             formData.append('name', $('form#permission-create-form input#name').val());
 
+            const _token = $('form#permission-create-form input[name="_token"]').val();
             fetch(apiEndpoint, {
                 method: 'POST',
                 headers: {
                     'Accept': 'application/json',
                     'Authorization': 'Bearer ' + token,
+                    'X-CSRF-TOKEN': _token,
                     // 'Content-Type': 'application/json',
                 },
                 body: formData,

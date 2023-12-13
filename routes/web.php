@@ -29,7 +29,7 @@ Route::get('/login', function () {
     return view('login');
 })->name('login');
 
-Route::post('logout', [AuthController::class, 'destroy'])->name('logout');
+Route::post('/logout', [AuthController::class, 'destroy'])->name('logout');
 
 Route::get('/register', function () {
     return view('register');

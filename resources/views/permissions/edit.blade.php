@@ -34,7 +34,7 @@
                     </p>
 
                     <form id="permission-edit-form" method="POST" action="{{route('api.admin.permissions.edit', ['id' => $permission['name']])}}">
-                        
+                        @csrf
                         <div class="form-group">
                             <label for="name">Permission Name</label>
                             <input type="text" class="form-control" name="name" id="name" value="{{$permission['name']}}">

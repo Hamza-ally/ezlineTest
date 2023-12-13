@@ -34,7 +34,7 @@
                     </p>
 
                     <form id="role-edit-form" method="POST" action="{{route('api.admin.roles.edit', ['id' => $role['name']])}}">
-                        
+                        @csrf
                         <div class="form-group">
                             <label for="name">Role Name</label>
                             <input type="text" class="form-control" name="name" id="name" value="{{$role['name']}}">

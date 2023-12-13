@@ -35,7 +35,7 @@
 
                     <form id="role-create-form" method="POST"
                         action="{{ route('api.admin.roles.create.permissions', ['id' => $role['id']]) }}">
-
+                        @csrf
                         <div class="form-group">
                             <label>Select Permissions for '{{$role['name']}}'</label>
                             <select class="js-example-basic-multiple w-100" multiple="multiple" id="permissions" name="permisisons">

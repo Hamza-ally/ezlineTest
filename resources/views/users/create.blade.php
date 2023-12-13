@@ -34,7 +34,7 @@
                     </p>
 
                     <form id="user-create-form" method="POST" action="{{route('api.admin.users.create')}}">
-                        
+                        @csrf
                         <div class="form-group">
                             <label for="name">Name</label>
                             <input type="text" class="form-control" name="name" id="name" placeholder="Name">

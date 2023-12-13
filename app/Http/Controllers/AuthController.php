@@ -22,7 +22,7 @@ class AuthController extends Controller
         return Validator::make($data, [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'role' => ['required', 'in:Admin,Elevated User,User'],
+            // 'role' => ['required', 'in:Admin,Elevated User,User'],
             'password' => ['required', 'string', 'min:8'],
             'confirm_password' => ['same:password'],
         ]);
@@ -38,7 +38,6 @@ class AuthController extends Controller
     protected function registered(Request $request, $user)
     {
         $user->generateToken();
-
         return response()->json(['data' => $user->toArray()], 201);
     }
 
@@ -63,20 +62,20 @@ class AuthController extends Controller
      */
     public function store($request)
     {
-        $roles = ['Admin' => "1", "Elevated User" => "2", "User" => "3"];
-        if(in_array($request->role, $roles)){
-            $role = Role::where('id', (int)$roles[$request->role])->first();
+        // $roles = ['Admin' => "1", "Elevated User" => "2", "User" => "3"];
+        // if(in_array($request->role, $roles)){
+            $role = Role::where('id', 3)->first();
             $user = new User();
             $user->name = $request['name'];
             $user->email = $request['email'];
-            $user->role = $request->role;
+            $user->role = 'User';
             $user->password = Hash::make($request['password']);
             $user->save();
             $user->assignRole($role);
             return $user;
-        }else{
-            return response()->json(['data' => "Invalid Role!"]);
-        }
+        // }else{
+        //     return response()->json(['data' => "Invalid Role!"]);
+        // }
         
     }
 

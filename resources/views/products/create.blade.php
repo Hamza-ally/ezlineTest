@@ -34,7 +34,7 @@
                     </p>
 
                     <form id="product-create-form" method="POST" action="{{route('api.admin.products.create')}}">
-                        
+                        @csrf
                         <div class="form-group">
                             <label for="name">Name</label>
                             <input type="text" class="form-control" name="name" id="name" placeholder="Name">

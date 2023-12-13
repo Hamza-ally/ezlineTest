@@ -17,11 +17,13 @@ var CreateUsers = function () {
             formData.append('role', $('form#user-create-form select#role').val());
             formData.append('password', $('form#user-create-form input#password').val());
 
+            const _token = $('form#user-create-form input[name="_token"]').val();
             fetch(apiEndpoint, {
                 method: 'POST',
                 headers: {
                     'Accept': 'application/json',
                     'Authorization': 'Bearer ' + token,
+                    'X-CSRF-TOKEN': _token,
                     // 'Content-Type': 'application/json',
                 },
                 body: formData,

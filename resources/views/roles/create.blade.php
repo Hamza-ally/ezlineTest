@@ -34,7 +34,7 @@
                     </p>
 
                     <form id="role-create-form" method="POST" action="{{route('api.admin.roles.create')}}">
-                        
+                        @csrf
                         <div class="form-group">
                             <label for="name">Role Name</label>
                             <input type="text" class="form-control" name="name" id="name" placeholder="Role Name">

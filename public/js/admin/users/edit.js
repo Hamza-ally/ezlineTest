@@ -18,11 +18,13 @@ var EditUsers = function () {
             formData.append('role', $('form#user-edit-form select#role').val());
             formData.append('password', $('form#user-edit-form input#password').val());
 
+            const _token = $('form#user-edit-form input[name="_token"]').val();
             fetch(apiEndpoint, {
                 method: 'POST',
                 headers: {
                     'Accept': 'application/json',
                     'Authorization': 'Bearer ' + token,
+                    'X-CSRF-TOKEN': _token,
                     // 'Content-Type': 'application/json',
                 },
                 body: formData,

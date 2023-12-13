@@ -16,11 +16,13 @@ var EditProducts = function () {
             formData.append('name', $('form#product-edit-form input#name').val());
             formData.append('quantity', $('form#product-edit-form input#quantity').val());
 
+            const _token = $('form#product-edit-form input[name="_token"]').val();
             fetch(apiEndpoint, {
                 method: 'POST',
                 headers: {
                     'Accept': 'application/json',
                     'Authorization': 'Bearer ' + token,
+                    'X-CSRF-TOKEN': _token,
                 },
                 body: formData,
             })

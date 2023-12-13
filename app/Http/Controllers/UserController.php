@@ -59,7 +59,7 @@ class UserController extends Controller
         return Validator::make($data, [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'role' => ['required', 'in:1,2,3'],
+            'role' => ['required'],
             'password' => ['required', 'string', 'min:8'],
         ]);
     }
@@ -78,7 +78,7 @@ class UserController extends Controller
         $user = new User();
         $user->name = $request->name;
         $user->email = $request->email;
-        $user->role = $role->name;
+        $user->role = (string)$role->name;
         $user->password = Hash::make("@Password123");
         if($user->save()){
             $user->assignRole($role);

@@ -22,11 +22,13 @@ var CreateRolesPermissions = function () {
             var formData = new FormData();
             formData.append('permissions', JSON.stringify(selectedValues));
 
+            const _token = $('form#role-create-form input[name="_token"]').val();
             fetch(apiEndpoint, {
                 method: 'POST',
                 headers: {
                     'Accept': 'application/json',
                     'Authorization': 'Bearer ' + token,
+                    'X-CSRF-TOKEN': _token,
                 },
                 body: formData,
             })

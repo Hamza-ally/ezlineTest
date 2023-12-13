@@ -12,13 +12,16 @@ var Auth = function () {
             const requestData = {
                 email: $('form#login_form input#email').val(),
                 password: $('form#login_form input#password').val(),
+                // _token: $('form#login_form input[name="_token"]').val(),
             };
-
+            // console.log(requestData);
+            const _token = $('form#login_form input[name="_token"]').val();
             fetch(loginApiRoute, {
                 method: 'POST',
                 headers: {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': _token,
                     // 'Authorization': 'Bearer ' + yourAccessToken ?? ''
                 },
                 body: JSON.stringify(requestData)
@@ -30,6 +33,7 @@ var Auth = function () {
                     return response.json();
                 })
                 .then(data => {
+                    console.log(data);
                     var token = data.data.api_token;
                     const redirectURL = `${baseURL}/home?token=${token}`;
                     window.location.assign(redirectURL);
@@ -52,12 +56,13 @@ var Auth = function () {
                 password: $('form#register_form input#password').val(),
                 confirm_password: $('form#register_form input#confirm_password').val(),
             };
-
+            const _token = $('form#register_form input[name="_token"]').val();
             fetch(registerApiRoute, {
                 method: 'POST',
                 headers: {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': _token,
                     // 'Authorization': 'Bearer ' + yourAccessToken ?? ''
                 },
                 body: JSON.stringify(requestData)

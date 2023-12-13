@@ -34,7 +34,7 @@
                     </p>
 
                     <form id="product-edit-form" method="POST" action="{{route('api.admin.products.edit', ['id' => $product['id']])}}">
-                        
+                        @csrf
                         <div class="form-group">
                             <label for="name">Name</label>
                             <input type="text" class="form-control" name="name" id="name" value="{{$product['name']}}">

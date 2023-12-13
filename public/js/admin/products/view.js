@@ -4,7 +4,8 @@ var ProductsView = function () {
 
     const user = _user;
     const baseURL = window.location.origin;
-
+    const meta_token = document.querySelector('meta[name="csrf-token"]').content;
+    
     function drawDatatable(token, apiEndpointView){
         fetch(apiEndpointView, {
             method: 'GET',
@@ -72,6 +73,7 @@ var ProductsView = function () {
                     'Accept': 'application/json',
                     'Authorization': 'Bearer ' + token,
                     'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': meta_token,
                 },
             })
             .then(response => response.json())
